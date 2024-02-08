@@ -18,8 +18,8 @@ export default function Hader(){
                 <Link href="/categorypage?categoryNo=4"><li>Acc</li></Link>
             </ul>
             <ul className={style.RMenu}>
-                <li className={style.SU}>/SignUp</li>
-                <li>Login</li>
+                <Link href="/signup"><li className={style.SU}>/SignUp</li></Link>
+                <Link href="/login"><li>Login</li></Link>
                 <li className={style.Serch}>○</li>
  
             </ul>
