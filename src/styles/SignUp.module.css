@@ -1,0 +1,79 @@
+.LoginPage{
+    width: 100%;
+}
+.LoginBox{
+    width: 360px;
+    margin: 0 auto;
+}
+.LoginBox h3{
+    text-decoration: underline;
+    margin-bottom: 5px;
+}
+.IDBox{
+    width: 100%;
+}
+.IDBox p{
+    width: 45%;
+    float: left;
+    margin-bottom: 10px;
+
+}
+.IDBox input{
+    margin-bottom: 10px;
+
+    width: 50%;
+    float: left;
+}
+
+#PW{
+    margin: 0 !important;
+}
+.Sm{
+    width: 30% !important;
+}
+
+
+.TermsBox{
+    float: left;
+    width: 360px;
+    
+}
+.TermsBox h3{
+    margin-top: 15px;
+    font-family: 'Pretendard-Regular' !important;
+
+}
+.TermsBox table{
+    margin-top: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+    border-collapse: collapse;
+    border:  1px solid black;
+}
+.TermsBox table td{
+    padding: 10px 0 10px 0;
+    border:  1px solid black;
+}
+.TermsBox table td input{
+    position: relative;
+    top:5px;
+    width: 20px;
+    height: 20px;
+    margin-left: 2%;
+    background-color: red;
+}
+.TermsBox table td span{
+    line-height: 30px;
+    margin-left: 2%;
+    font-family: 'Pretendard-Regular' !important;
+
+}
+
+.LoginBtn{
+    width: 100%;
+    height: 50px;
+    color:white;
+    
+    background-color: black;
+    margin-bottom: 100px;
+}

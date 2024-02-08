@@ -12,9 +12,16 @@
     margin: 0 auto; 
     padding: 0;
 }
+.ClosetImgBox{
+    width: 335px;
+    height: 365px ;
+    background-color: beige;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.05), 0 3px 6px rgba(0,0,0,0.11);
+
+}
 .ClosetBox li img {
-    width: 360px;
-    height: 390px ;
+    width: 335px;
+    height: 365px ;
     margin: 0;
     padding: 0;
 }
@@ -29,4 +36,7 @@
 }
 .ClosetBox li p {
     font-family: 'Pretendard-Regular';
+}
+.ClosetName{
+    margin-top: 5px;
 }

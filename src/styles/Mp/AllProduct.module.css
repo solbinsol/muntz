@@ -1,7 +1,6 @@
 /* NewProduct 신상 , 새 옷*/
 .NewProduct{
-    width: 80%;
-    margin-left: 10%;
+    width: 100%;
 }
 .NewProduct h2{
     margin-top: 15px;

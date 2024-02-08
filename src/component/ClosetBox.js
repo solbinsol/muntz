@@ -1,33 +1,27 @@
 import React from "react";
-import style from '@/styles/ClosetBox.module.css'
+import Link from "next/link";
+import style from '@/styles/ClosetBox.module.css';
 
-export default function ClosetBox(){
-
-    return(
-        <div className={style.ClosetBox}>
-        <ul>
-          <li>
-            <img className={style.ClosetImg} src='image/test1.jpg'></img>
-            <p className={style.ClosetName}>티티티셔츠</p>
-            <p className={style.ClosetPrice}>백마넌 </p>
-          </li>
-          <li>
-            <img className={style.ClosetImg} src='image/test1.jpg'></img>
-            <p className={style.ClosetName}>티티티셔츠</p>
-            <p className={style.ClosetPrice}>백마넌 </p>
-          </li>
-          <li>
-            <img className={style.ClosetImg} src='image/test1.jpg'></img>
-            <p className={style.ClosetName}>티티티셔츠</p>
-            <p className={style.ClosetPrice}>백마넌 </p>
-          </li>
-          <li>
-            <img className={style.ClosetImg} src='image/test1.jpg'></img>
-            <p className={style.ClosetName}>티티티셔츠</p>
-            <p className={style.ClosetPrice}>백마넌 </p>
-          </li>
-  
-        </ul>
-      </div>
-    )
+export default function ClosetBox({ products }) {
+  return (
+    <div className={style.ClosetBox}>
+      <ul>
+        {products ? (
+          products.map((product) => (
+            <li key={product.product_id}>
+              <Link href={`/detail?product_id=${product.product_id}`}>
+                  <div className={style.ClosetImgBox}>
+                    <img className={style.ClosetImg} src={product.thumbnail_image} alt={product.product_name} />
+                  </div>
+                  <p className={style.ClosetName}>{product.product_name}</p>
+                  <p className={style.ClosetPrice}>{product.price}원</p>
+              </Link>
+            </li>
+          ))
+        ) : (
+          <p>No products available</p>
+        )}
+      </ul>
+    </div>
+  );
 }
