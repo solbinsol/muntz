@@ -6,13 +6,43 @@ import axios from "axios";
 
 export default function DetailPage() {
     const [selectedTab, setSelectedTab] = useState('description');
+    const [currentUserID, setCurrentUserID] = useState(null);
+    const [userBasResponse, setUserBasket] = useState(null);
 
-  const router = useRouter();
-  const [product, setProduct] = useState(null);
+    
+    const [userLikeResponse, setUserLikeResponse] = useState(null); // userLikeResponse를 선언
+
+
+    const [btnBasketClass, setBtnBasketClass] = useState(''); // 수정: 바구니 버튼 스타일 상태 추가
+
+    const [isInBasket, setIsInBasket] = useState(false);
+
+
+    const router = useRouter();
+    const currentProductID = router.query.product_id;
+    const [product, setProduct] = useState(null);
 // DetailPage.js
-
-// ... (이전 코드)
 useEffect(() => {
+    // 좋아요와 바구니 상태 초기화
+    if (product) {
+        setIsInBasket(product.isInBasket === 1);
+    }
+  }, [product]);
+  
+
+  
+// ... (이전 코드)
+
+
+useEffect(() => {
+
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    if (storedUser) {
+        setCurrentUserID(storedUser.user_id);
+    console.log(currentUserID);
+
+    }
+    
     const fetchProduct = async () => {
         const { product_id } = router.query;
 
@@ -38,12 +68,29 @@ useEffect(() => {
             const stockResponse = await axios.get(`http://localhost:5000/api/stock/${product_id}`);
             console.log('Stock API Response:', stockResponse.data);
 
+
+
+            const userLikeResponse = await axios.post('http://localhost:5000/api/user_likes/get-like', { user_id: storedUser.user_id, product_id });
+            console.log('User Like Response:', userLikeResponse.data);
+            setUserLikeResponse(userLikeResponse.data);
+
+
+            const userBasResponse = await axios.post('http://localhost:5000/api/user_likes/get-basket', { user_id: storedUser.user_id, product_id });
+            console.log('Basket Response:', userBasResponse.data);
+            setUserBasket(userBasResponse.data);
+
+            
+
             // 받아온 상품 정보, ProductDetails 정보, 사이즈 정보, 재고 정보를 합쳐서 상태에 저장
             const productWithDetailsAndSize = { 
                 ...productResponse.data, 
                 ...productDetailsResponse.data, 
                 sizes: sizeResponse.data, 
-                stock: stockResponse.data 
+                stock: stockResponse.data ,
+                liked: userLikeResponse.data.liked === 1,
+                isInBasket: userLikeResponse.data.basket === 1,
+                isInBasket: userBasResponse.data.basket === 1,
+
             };
             setProduct(productWithDetailsAndSize);
         } catch (error) {
@@ -52,7 +99,63 @@ useEffect(() => {
     };
 
     fetchProduct();
-}, [router.query.product_id]);
+}, [router.query.product_id ]);
+
+const toggleLike = async () => {
+    try {
+      // 서버에 토글된 정보를 전송
+      const response = await axios.post('http://localhost:5000/api/user_likes/toggle-like', { user_id: currentUserID, product_id: currentProductID });
+
+      console.log('Toggle Like Response:', response.data);
+
+      // 서버에서 받아온 좋아요 여부를 확인
+      const updatedLikes = response.data.likes;
+
+
+      setProduct((prevProduct) => ({
+        ...prevProduct,
+        likes: updatedLikes,
+        liked: response.data.liked, // 수정: 서버에서 받아온 liked 값을 업데이트
+      }));
+      const newBtnLikeClass = response.data.liked === 1 ? style.BtnLike2 : '';
+      const likeButton = document.querySelector(`.${style.BtnLike}`);
+      likeButton.className = `${style.BtnLike} ${newBtnLikeClass}`;
+      
+
+
+    } catch (error) {
+      console.error('좋아요 토글 오류:', error);
+      // 에러가 발생한 경우, 다시 이전 상태로 돌려놓기
+      setIsLiked((prevIsLiked) => !prevIsLiked);
+    }
+};
+
+const toggleBasket = async () => {
+    try {
+        const response = await axios.post('http://localhost:5000/api/user_likes/toggle-basket', { user_id: currentUserID, product_id: currentProductID });
+        console.log(response.data.message);
+
+        // 성공 시에 클라이언트에서 바구니 상태 및 버튼 스타일 업데이트
+        setIsInBasket((prevIsInBasket) => !prevIsInBasket); // 바구니 상태를 토글합니다.
+
+        if (response.data.success) {
+            setProduct((prevProduct) => ({
+                ...prevProduct,
+                likes: response.data.likes,
+                liked: response.data.liked === 1, // 수정: 서버에서 받아온 liked 값을 업데이트
+            }));
+
+            // 바구니 버튼 스타일 업데이트
+            const newBtnBasketClass = response.data.basket === 1 ? style.BtnBag2 : '';
+            setBtnBasketClass(newBtnBasketClass);
+        }
+        const newBtnBagClass = response.data.basket === 1 ? style.BtnBag2 : '';
+        const BagButton = document.querySelector(`.${style.BtnBag}`);
+        BagButton.className = `${style.BtnBag} ${newBtnBagClass}`;
+    } catch (error) {
+        console.error('바구니 토글 오류:', error);
+    }
+};
 
   return (
     <div>
@@ -144,12 +247,17 @@ useEffect(() => {
                         </div>
                         <div className={style.BtnBox}>
                             <button className={style.BtnBuy}>BUY NOW</button>
-                            <button className={style.BtnLike}>♥</button>
-                            <button className={style.BtnBag}>바구니</button>
-                        </div>        
+                            
 
+                            <button
+                                        className={`${style.BtnLike} ${userLikeResponse && userLikeResponse.liked === 1 ? style.BtnLike2 : ''}`}
+                                        onClick={toggleLike}
+                                    >
+                                        ♥
+                                    </button>
 
-    
+                            <button className={`${style.BtnBag} ${userBasResponse && userBasResponse.basket === 1 ? style.BtnBag2 : ''}`} onClick={toggleBasket}>바구니</button>
+                        </div>            
                     </div>
 
                 </div>

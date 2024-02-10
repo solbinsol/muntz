@@ -34,6 +34,8 @@
 }
 
 .MenuBox{
+
+
     line-height: 63px;
     width: 90%;
     float: left;
@@ -65,10 +67,17 @@
     padding: 0;
     margin-right:0%;
     margin-left: 0%;
+    cursor: pointer;
 }
 .Serch{
     margin-right: 2% !important;
 }
 .SU{
+    margin-right: 2% !important;
+}
+
+
+.UN{
+    font-family: 'Pretendard-Regular' !important;
     margin-right: 2% !important;
 }

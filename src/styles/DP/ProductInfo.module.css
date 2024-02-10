@@ -151,8 +151,8 @@
     width: 20%;
     margin-left: 1%;
     font-size: 30px;
-    color:white;
-    background-color: red;
+    color:black;
+    background-color: white;
     border: 1px solid red;
     height: 100%;
 }
@@ -160,11 +160,24 @@
     width: 20%;
     margin-left: 1%;
     font-size: 30px;
-    color:white;
+    color:black;
     border: 1px solid black;
 
-    background-color: black;
+    background-color: white;
     height: 100%;
     font-family: 'Pretendard-Regular' !important;
 
 }
+
+
+.BtnLike2
+ {
+    background-color: red; /* 좋아요 상태일 때의 배경색 */
+    color:White;
+  }
+  
+
+  .BtnBag2{
+    color:white;
+    background-color: black; /* 바구니 상태일 때의 배경색 */
+    }
