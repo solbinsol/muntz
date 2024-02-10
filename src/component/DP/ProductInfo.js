@@ -52,6 +52,7 @@ useEffect(() => {
                 return;
             }
 
+
             // 기존의 상품 정보를 가져오는 API
             const productResponse = await axios.get(`http://localhost:5000/api/product/${product_id}`);
             console.log('Product API Response:', productResponse.data);
@@ -93,6 +94,9 @@ useEffect(() => {
 
             };
             setProduct(productWithDetailsAndSize);
+
+            await axios.post('http://localhost:5000/api/increase-view-count', { product_id });
+
         } catch (error) {
             console.error('API 호출 오류:', error);
         }
