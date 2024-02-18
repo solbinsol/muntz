@@ -12,24 +12,41 @@ export default function ProductAdd() {
   const [thumbnailImage, setThumbnailImage] = useState("");
   const [detailPageImage, setDetailPageImage] = useState("");
   const [description, setDescription] = useState("");
+
+
   const [sizes, setSizes] = useState([
-    { size_type: "상의", size_value_s: 0, size_value_m: 0, size_value_l: 0 },
-    { size_type: "하의", size_value_s: 0, size_value_m: 0, size_value_l: 0 },
+    { size_category_id: 1, size_type: "총장", size_value_s: 0, size_value_m: 0, size_value_l: 0 },
+    { size_category_id: 1, size_type: "가슴", size_value_s: 0, size_value_m: 0, size_value_l: 0 },
+    { size_category_id: 1, size_type: "어깨", size_value_s: 0, size_value_m: 0, size_value_l: 0 },
+    { size_category_id: 2, size_type: "총장", size_value_s: 0, size_value_m: 0, size_value_l: 0 },
+    { size_category_id: 2, size_type: "밑위", size_value_s: 0, size_value_m: 0, size_value_l: 0 },
+    { size_category_id: 2, size_type: "허벅지", size_value_s: 0, size_value_m: 0, size_value_l: 0 },
   ]);
+
   const [stocks, setStocks] = useState({ stock_quantity_s: 0, stock_quantity_m: 0, stock_quantity_l: 0 });
 
   // 제품 등록 처리 함수
   const handleAddProduct = async () => {
     try {
       // API 호출
-      const response = await axios.post("/api/addProduct", {
+
+      const formattedSizes = sizes.map((size) => ({
+        size_category_id: size.size_category_id,
+        size_type: size.size_type,
+        size_value_s: size.size_value_s,
+        size_value_m: size.size_value_m,
+        size_value_l: size.size_value_l,
+      }));
+
+
+      const response = await axios.post("http://localhost:5000/api/AddProduct/AddProduct", {
         productName,
         price,
         categoryId,
         thumbnailImage,
         detailPageImage,
         description,
-        sizes,
+        sizes: formattedSizes,
         stocks,
       });
 
@@ -37,6 +54,59 @@ export default function ProductAdd() {
     } catch (error) {
       console.error("Error adding product:", error);
     }
+  };
+
+  const renderSizeTable = () => {
+    const sizeColumns = selectedProductType === "상의" ? ["S", "M", "L"] : ["S", "M", "L"];
+
+    return (
+      <table>
+        <thead>
+          <tr>
+            <th>사이즈</th>
+            {sizeColumns.map((column, index) => (
+              <th key={index}>{column}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {sizes
+            .filter((size) => size.size_category_id === (selectedProductType === "상의" ? 1 : 2))
+            .map((size, index) => (
+              <tr key={index}>
+                <td>{size.size_type}</td>
+                <td>
+                  <input
+                    type="number"
+                    onChange={(e) => handleSizeChange(index, "size_value_s", e.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    onChange={(e) => handleSizeChange(index, "size_value_m", e.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    onChange={(e) => handleSizeChange(index, "size_value_l", e.target.value)}
+                  />
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
+    );
+  };
+
+  // 각 사이즈의 값 변경 처리 함수
+  const handleSizeChange = (index, key, value) => {
+    setSizes((prevSizes) => {
+      const newSizes = [...prevSizes];
+      newSizes[index][key] = value;
+      return newSizes;
+    });
   };
 
     return(
@@ -80,110 +150,8 @@ export default function ProductAdd() {
                         <option>상의</option>
                         <option>하의</option>
                         </select>
-                        {/* option 상의를 선택시 보이는 테이블 */}
-                        {selectedProductType === "상의" && (
-                        <>
-                        <p className={style.TT}>* 존재하는 사이즈만 입력하면 됨 / FREE SIZE : S 에만 입력</p>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>사이즈</th>
-                                    {/* productsize 테이블의 size_type의 자동으로
-                                        총장, 가슴 어깨 입력됨
-                                    */}
-                                    <th>총장</th>
-                                    <th>가슴</th>
-                                    <th>어깨</th>
-                                </tr>
-                            </thead> 
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        S
-                                    </td>
-                                    {/* productsize 테이블의 size_value_s */}
-                                    {/* 즉 size_type 각각  "총장", "가슴" , "어깨"의 size_value_s */}
-                                    <td><input type="number"/></td>
-                                    <td><input type="number"/></td>
-                                    <td><input type="number"/></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        M
-                                    </td>
-                                    {/* productsize 테이블의 size_value_m */}
-                                    {/* 즉 size_type 각각  "총장", "가슴" , "어깨"의 size_value_m */}
-                                    <td><input type="number"/></td>
-                                    <td><input type="number"/></td>
-                                    <td><input type="number"/></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        L
-                                    </td>
-                                    {/* productsize 테이블의 size_value_l */}
-                                    {/* 즉 size_type 각각  "총장", "가슴" , "어깨"의 size_value_l */}
-                                    <td><input type="number"/></td>
-                                    <td><input type="number"/></td>
-                                    <td><input type="number"/></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        </>
-                                    )}
+                        {renderSizeTable()}
 
-                        {/* option 하의를 선택시 보이는 테이블 */}
-                        {selectedProductType === "하의" && (
-              <>
-
-                        <p className={style.TT}>* 존재하는 사이즈만 입력하면 됨 / FREE SIZE : S 에만 입력</p>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>사이즈</th>
-                                    {/* productsize 테이블의 size_type의 자동으로
-                                        총장, 가슴 어깨 입력됨
-                                    */}
-                                    <th>총장</th>
-                                    <th>밑위</th>
-                                    <th>허벅지</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        S
-                                    </td>
-                                    {/* productsize 테이블의 size_value_s */}
-                                    {/* 즉 size_type 각각  "총장", "가슴" , "어깨"의 size_value_s */}
-                                    <td><input type="number"/></td>
-                                    <td><input type="number"/></td>
-                                    <td><input type="number"/></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        M
-                                    </td>
-                                    {/* productsize 테이블의 size_value_m */}
-                                    {/* 즉 size_type 각각  "총장", "가슴" , "어깨"의 size_value_m */}
-                                    <td><input type="number"/></td>
-                                    <td><input type="number"/></td>
-                                    <td><input type="number"/></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        L
-                                    </td>
-                                    {/* productsize 테이블의 size_value_l */}
-                                    {/* 즉 size_type 각각  "총장", "가슴" , "어깨"의 size_value_l */}
-                                    <td><input type="number"/></td>
-                                    <td><input type="number"/></td>
-                                    <td><input type="number"/></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        </>
-            )}
                         <div className={style.AddInfo}>
                                <h3>STOCK</h3>
                             <p className={style.TT2}>FREE SIZE : S 만 등록</p>
@@ -200,6 +168,9 @@ export default function ProductAdd() {
                         </div>
 
                     </div>
+                      <button type="button" onClick={handleAddProduct}>
+                        제품 등록
+                    </button>
                 </form>
             </div>
         </div>

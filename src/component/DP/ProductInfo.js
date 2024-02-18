@@ -39,7 +39,7 @@ useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem('user'));
     if (storedUser) {
         setCurrentUserID(storedUser.user_id);
-    console.log(currentUserID);
+        console.log(currentUserID);
 
     }
     
