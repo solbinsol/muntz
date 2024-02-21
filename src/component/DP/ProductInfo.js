@@ -165,7 +165,7 @@ const toggleBasket = async () => {
     <div>
       <div className={style.DetailPage}>
         <div className={style.DetailBox}>
-          {product ? (
+          {product ? (//
             <div>
                 <div className={style.ImgBox}>
                 <img src={product.thumbnail_image} alt={product.product_name} />

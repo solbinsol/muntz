@@ -1,6 +1,6 @@
 import React from "react";
 import style from "../styles/Footer.module.css";
-
+import Link from "next/link";
 
 const Footer = () => {
 
@@ -25,7 +25,7 @@ const Footer = () => {
                         <h4>Join Us</h4>
                         <p>회원을 위한 다양한 혜택이 준비되어 있습니다. </p>
                         <p>Sign Up now enjoy convenient features and benefits.</p>
-                        <input className={style.Btn} type="submit" value="JOIN US"/>
+                        <Link href="/login"><input className={style.Btn} type="submit" value="JOIN US"/></Link>
                         <br/>
 
                     </div>
