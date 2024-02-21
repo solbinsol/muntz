@@ -56,3 +56,11 @@
     color:gray;
     font-size: 11px;
 }
+.Abtn{
+    width: 100%;
+    font-family: 'Pretendard-Regular' !important;
+    color:white;
+    background-color: black;
+    margin-top: 25px;
+    height: 40px;
+}

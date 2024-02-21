@@ -131,6 +131,15 @@ export default function ProductAdd() {
                         <p>가격</p>
                         <input type="number" onChange={(e) => setPrice(e.target.value)} />
                     </div>
+
+                    {/* 추가 
+                      블랙, 화이트 이렇게 ,로 구분 가능하면 좋을듯
+                    */}
+                    <div className={style.AddInfo}>
+                        <p>컬러</p>
+                        <input type="text"  />
+                    </div>
+
                     <div className={style.AddInfo}>
                         <p>썸네일 이미지</p>
                         <input type="text" onChange={(e) => setThumbnailImage(e.target.value)} />
@@ -145,14 +154,14 @@ export default function ProductAdd() {
                     </div>
                     <div className={style.AddInfo}>
                         <h3>Size</h3>
-                        <p>제품 타입</p>
-                        <select onChange={(e) => setSelectedProductType(e.target.value)}>
+                        {/* <p>제품 타입</p> */}
+                        {/* <select onChange={(e) => setSelectedProductType(e.target.value)}>
                         <option>상의</option>
                         <option>하의</option>
-                        </select>
+                        </select> */}
                         {renderSizeTable()}
 
-                        <div className={style.AddInfo}>
+                        {/* <div className={style.AddInfo}>
                                <h3>STOCK</h3>
                             <p className={style.TT2}>FREE SIZE : S 만 등록</p>
                             <p>S 재고</p>
@@ -165,10 +174,10 @@ export default function ProductAdd() {
                         <div className={style.AddInfo}>
                             <p>L 재고</p>
                             <input type="number" onChange={(e) => setStocks({ ...stocks, stock_quantity_l: e.target.value })} />
-                        </div>
+                        </div> */}
 
                     </div>
-                      <button type="button" onClick={handleAddProduct}>
+                      <button type="button" className={style.Abtn} onClick={handleAddProduct}>
                         제품 등록
                     </button>
                 </form>

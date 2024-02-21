@@ -62,8 +62,7 @@ export default function DetailPage() {
             });
             console.log('User Like Response:', userLikeResponse.data);
             setUserLikeResponse(userLikeResponse.data);
-            console.log('User Like Response:', userLikeResponse.data);
-
+                
             if (!userLikeResponse.data) {
                 // 레코드가 없으면 새로운 레코드 추가
                 await axios.post('http://localhost:5000/api/user_likes/insert-like', {
