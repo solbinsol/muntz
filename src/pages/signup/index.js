@@ -14,6 +14,15 @@ import axios from 'axios';
 
 export default function SignUp() {
 
+    const [PersonalVisible , setPersonalVisible] = useState(false);
+    const [termsVisible, setTermsVisible] = useState(false);
+    PersonalVisible
+    const toggleTerms = () => {
+      setTermsVisible(!termsVisible);
+    };
+    const togglePersonnal = () => {
+      setPersonalVisible(!PersonalVisible);
+    };
     const [formData, setFormData] = useState({
         username: '',
         password: '',
@@ -120,13 +129,42 @@ export default function SignUp() {
                                     <tbody>
                                     <tr>
                                         <td>
-                                            <input type='checkbox'/><span> [필수] 이용약관 동의</span>
+                                            <input type='checkbox'/><span> [필수] 이용약관 동의 <span onClick={toggleTerms} className={style.drop}><img src="image/icon/drop.png" /></span></span>
                                         </td>
+
+                                    </tr>
+                                    <tr>
+                                    {termsVisible && (
+                                          <td>
+                                          <div className={`${style.Terms} ${termsVisible ? style.visible : style.hidden}`}>
+                                              <p>이용약관 내용 이용약관 내용</p>
+                                              <p>솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라</p>
+                                              <p>솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라</p>
+                                              <p>솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라</p>
+                                            </div>
+                                          </td>
+
+                                            )}
                                     </tr>
                                     <tr>
                                         <td>
-                                            <input type='checkbox'/><span> [필수] 개인정보 수집 및 이용 동의</span>
+                                            <input type='checkbox'/><span> [필수] 개인정보 수집 및 이용 동의 <span  onClick={togglePersonnal} className={style.drop}><img src="image/icon/drop.png" /></span></span>
+
+
                                         </td>
+                                    </tr>
+                                    <tr>
+                                    {PersonalVisible && (
+                                      <td>
+                                        <div className={`${style.Personal} ${PersonalVisible ? style.visible : style.hidden}`}>
+                                          <p>개인정보 수집 및 이용 동의 내용</p>
+                                          <p>솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라</p>
+                                          <p>솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라</p>
+                                          <p>솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라</p>
+                                        </div>
+                                      </td>
+                                        )}
+
                                     </tr>
                                     <tr>
                                         <td>
